@@ -28,8 +28,8 @@ if len(sys.argv) < 2:
 #scaling_factor_y = 3.15
 #outputdim = 1280
 
-original_x = 439.0 #remember some are 238
-original_y = 406.0 #remember some are 407s
+original_x = 439.0
+original_y = 406.0
 
 outputdim = sys.argv[1]
 scaling_factor_x = float(outputdim)/original_x

@@ -10,7 +10,6 @@ import cv2 #using opencv 3
 import glob            #to search for textfiles in folder
 import time
 import pickle
-import os.path
 
 workingpath   = './processed_labeled/images/'
 outputprefix_labels    = './processed_labeled/labels/3band_'
@@ -41,35 +40,31 @@ with open(featurefile) as data_file:
 features = [f for f in data['features']]
 
 
-
-
 #map filelist to featurelist 
 
 file_to_feature = []
-if not os.path.isfile(map_featureNR):
-
-    for nrstr,im_str in enumerate(filenames): 
-        if nrstr%100==0:print nrstr
-        featurelistNR = []
-        for nr,f in enumerate(features):
-            #remove '3band_' beginning and '.tif' ending
-            im_str_id = im_str[len(prefix_images):-len(postfix_images)]
+'''
+for nrstr,im_str in enumerate(filenames): 
+    if nrstr%100==0:print nrstr
+    featurelistNR = []
+    for nr,f in enumerate(features):
+        #remove '3band_' beginning and '.tif' ending
+        im_str_id = im_str[len(prefix_images):-len(postfix_images)]
+        
+        #and find the features associated with the current image [with a valid (!=-1) buildingid]
+        if f['properties']['ImageId'] == unicode(im_str_id):
+            featurelistNR.append(nr)
             
-            #and find the features associated with the current image [with a valid (!=-1) buildingid]
-            if f['properties']['ImageId'] == unicode(im_str_id):
-                featurelistNR.append(nr)
-                
-        file_to_feature.append(featurelistNR)
+    file_to_feature.append(featurelistNR)
 
-    fileObject = open(map_featureNR,'wb')
-    pickle.dump(file_to_feature,fileObject)   
-    fileObject.close()
-    end_time = time.time()
-    exit()
-    #took 2613 seconds
+fileObject = open(map_featureNR,'wb')
+pickle.dump(file_to_feature,fileObject)   
+fileObject.close()
+end_time = time.time()
+exit()
+#took 2613 seconds
 
-
-
+'''
 fileObject = open(map_featureNR,'r')
 file_to_feature = pickle.load(fileObject)
 
@@ -187,8 +182,8 @@ for im_str_nr, im_str in enumerate(filenames):
     labelfile.close()
         
     #write the png image asscociated
-    outputim = outputprefix_images + im_str_id + '.png'
-    cv2.imwrite(outputim,im)
+    #outputim = outputprefix_images + im_str_id + '.png'
+    #cv2.imwrite(outputim,im)
 end_time = time.time()
 
 print 'time: ', (end_time-start_time)      
